@@ -27,7 +27,7 @@
 
 <script>
 import Nav from '@/components/Navbar.vue';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 
 export default {
     name: 'Signin',
@@ -36,20 +36,20 @@ export default {
     },
     methods: {
         loginGoogle() {   
-            console.log("Login con Google");
             var provider = new firebase.auth.GoogleAuthProvider();
             firebase    
                 .auth()
                 .signInWithPopup(provider)
-                .then((user)=> this.$router.replace('gallery'), (error)=> console.error(error))
+                .then((user)=> this.$router.replace('gallery'))
+                .catch((error) => console.error(error));
         },
         loginFacebook() {
-            console.log("Login con Facebook");
             var provider = new firebase.auth.FacebookAuthProvider();
             firebase
                 .auth()
                 .signInWithPopup(provider)
-                .then((user)=> this.$router.replace('gallery'), (error)=> console.error(error))
+                .then((user)=> this.$router.replace('gallery'))
+                .catch((error) => console.error(error));
         }
     }
 }

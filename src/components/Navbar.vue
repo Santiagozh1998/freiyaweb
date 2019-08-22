@@ -2,17 +2,34 @@
   <b-navbar class="navbar" type="dark">
       <b-container>
             <router-link class="Logo" to="/signin">Freiya</router-link>
-            <!--
-              <b-navbar-nav class="ml-auto">
-                <router-link class="text-nav" to="/gallery">Galeria</router-link>
-              </b-navbar-nav>
-            -->
+
+            <b-navbar-nav v-if="usuario" class="ml-auto">
+              <b-nav-item @click="logout()">Salir</b-nav-item>
+            </b-navbar-nav>
       </b-container>
   </b-navbar>
 </template>
 
 <script>
+import firebase from 'firebase/app';
+
 export default {
+  data() {
+    return {
+      usuario: {}
+    }
+  },
+  created() {
+    this.usuario = firebase.auth().currentUser;
+  },
+  methods: {
+    logout() {
+      firebase
+          .auth()
+          .signOut()
+          .then(() => this.$router.push('signin'), (error) => console.error(error));
+    }
+  }
 
 }
 </script>

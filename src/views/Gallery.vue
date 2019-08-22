@@ -1,14 +1,13 @@
 <template>
   <div>
         <Nav />  
-        <b-button v-on:click="logout()">Salir</b-button>
         <Activities />
   </div>
 </template>
 
 <script>
 import Nav from '@/components/Navbar.vue';
-import firebase from 'firebase';    
+import firebase from 'firebase/app';   
 import Activities from '@/components/Activities.vue'
 
 export default {
@@ -16,14 +15,6 @@ export default {
     components: {
         Nav,
         Activities
-    },
-    methods: {
-        logout() {
-            firebase
-                .auth()
-                .signOut()
-                .then(() => this.$router.replace('signin'), (error) => console.error(error));
-        }
     }
 }
 </script>
