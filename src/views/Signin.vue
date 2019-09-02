@@ -37,19 +37,19 @@ export default {
     methods: {
         loginGoogle() {   
             var provider = new firebase.auth.GoogleAuthProvider();
-            firebase    
+            var auth = firebase    
                 .auth()
                 .signInWithPopup(provider)
                 .then((user)=> this.$router.replace('gallery'))
-                .catch((error) => console.error(error));
+                .catch((error) => {});
         },
         loginFacebook() {
             var provider = new firebase.auth.FacebookAuthProvider();
-            firebase
+            var auth = firebase
                 .auth()
                 .signInWithPopup(provider)
                 .then((user)=> this.$router.replace('gallery'))
-                .catch((error) => console.error(error));
+                .catch((error) => {});
         }
     }
 }

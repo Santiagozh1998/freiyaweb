@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Signin from './views/Signin.vue'
 import Gallery from './views/Gallery.vue'
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 
 Vue.use(Router)
 
