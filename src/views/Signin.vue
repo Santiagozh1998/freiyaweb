@@ -2,7 +2,7 @@
     <div>
         <Nav />
         <b-container class="container-login">
-            <h3>Inicia sesión para entrar a la galería multimedia de Freiya</h3>
+            <h3>Inicia sesión para entrar a la galería de Freiya</h3>
             <b-row class="justify-content-center">
                 <b-col lg="3">
                     <div class="container-social">

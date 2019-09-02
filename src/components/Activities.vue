@@ -1,40 +1,104 @@
 <template>
-    <div class="container-activities">
-        <h1 class="text-center">Actividades</h1>
-        <b-row class="text-center justify-content-center">
-            <b-col v-bind:key="a.joinCode" class="activities" cols="4" lg="3" v-for="a in Activities">
-                <h4>
-                    {{a.challengeName}}</h4>
-                <p>Imagen a futuro</p>
-                <p>Descripcion:</p>
-                <p>
-                    {{a.challengeDescription}}</p>
-            </b-col>
-        </b-row>
+    <div>
+        <!-- Imagenes -->
+        <b-container v-if="estado" class="container-images text-center justify-content-center">
+            <div class="text-left">
+                <b-button @click="closeImages()" variant="danger">X</b-button>
+            </div>
+            <h3>
+                {{title}}
+            </h3>
+            <b-row v-if="images[index].length !== 0" >
+                <b-col v-bind:key="img.resourceId" v-for="(img, i) in images[index]">
+                    <img v-bind:src="urls[i]" width="180px">
+                    <p>Estudiante: {{img.resourceNameStudent}}</p>
+                </b-col>
+            </b-row>
+            <b-row v-if="images[index].length === 0" >
+                <b-col>
+                    <h4>Esta actividad no tiene imagenes disponibles</h4>
+                    <img src="@/assets/nofound.jpg" width="300px">
+                </b-col>
+            </b-row>
+        </b-container>
+
+        <hr v-if="estado">
+
+        <!-- Actividades -->
+        <div class="container-activities">
+            <h1 class="text-center">Actividades</h1>
+            <b-row class="text-center justify-content-center">
+                <b-col v-bind:key="`a-${index}`" class="activities" cols="4" lg="3" v-for="(a, index) in Activities">
+                    <h4>
+                        {{a.challengeName}}
+                    </h4>
+                    <button variant="primary" class="button-activitie" v-on:click="showImages(index)">Ver imagenes</button>
+                    <p>Descripcion: <br>
+                        {{a.challengeDescription}}                        
+                    </p>
+                </b-col>
+            </b-row>
+        </div>
     </div>
 </template>
 
 <script>
 import firebase from 'firebase/app';
 
-
-
 export default {
     data () {
         return {
             Activities: [],
+            images: [],
+            urls: [],
+            title: "",
+            index: 0,
+            estado: false
         }
     },
     created() {
         var database = firebase
                 .database()
                 .ref('Activity/ActivityChallenge')
-                .once('value', (snap) => {
+                .on('value', (snap) => {
                     snap.forEach((snapshot) => {
-                        this.Activities.push(snapshot.val())
+                        
+                        this.Activities.push(snapshot.val());
+                        var images = snapshot.val().Resources;                        
+                        var temp = [];
+
+                        for(var img in images){
+                            temp.push(images[img]);
+                        }
+
+                        this.images.push(temp);
                     });
                 });
-                //this.imageUrl = "https://firebasestorage.googleapis.com/v0/b/freiyaproject-65b0b.appspot.com/o/-Lm1RN495aAeiMP5ugzC?alt=media&token=203b265f-f717-4a4f-af5a-d45d8660279a"
+    },
+    methods: {
+        showImages(index) {
+            var storage = firebase.storage();
+            this.estado = true;
+            this.urls = [];
+            this.title = this.Activities[index].challengeName;
+            this.index = index;
+            var images = this.images[index];
+            
+            for(var i = 0; i<images.length; i++){
+                storage.ref(images[i].resourceId)
+                    .getDownloadURL()
+                    .then((url) => {
+                        this.urls.push(url);
+                    })
+            }
+        },
+        closeImages() {
+            this.estado = false;
+            this.urls = [];
+            this.title = "";
+            this.index = 0;
+
+        }
     }
 
 }
@@ -44,11 +108,28 @@ export default {
 .activities{
     border: 1px solid #ccc;
     padding: 5px;
+    padding-top: 10px;
     border-radius: 5px;
     margin: 8px;
 }
 
 .container-activities{
     margin: 30px 10px 20px 10px;
+}
+
+.container-images{
+    margin-top: 20px;
+    padding-top: 10px;
+    padding-bottom: 30px;
+}
+
+.button-activitie{
+    background: #563d7c;
+    color: white;
+    padding: 8px 15px 8px 15px;
+    border: 0px;
+    border-radius: 0.25rem;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 </style>

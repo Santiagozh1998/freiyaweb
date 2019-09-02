@@ -15,17 +15,17 @@ const router = new Router({
       redirect: '/signin'
     },
     {
+      path: '/signin',
+      name: 'signin',
+      component: Signin
+    },
+    {
       path: '/gallery',
       name: 'gallery',
       component: Gallery,
       meta: {
         auth: true
       }
-    },
-    {
-      path: '/signin',
-      name: 'signin',
-      component: Signin
     }
   ]
 })
@@ -40,6 +40,7 @@ router.beforeEach((to, from, next) => {
     next('signin');
   }
   else if(!autorizacion && usuario){
+
     next('gallery');
   }
   else {
