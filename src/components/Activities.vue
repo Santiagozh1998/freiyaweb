@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="images-activities">
         <!-- Imagenes -->
         <b-container v-if="estado" class="container-images text-center justify-content-center">
             <div class="text-left">
@@ -28,11 +28,11 @@
         <div class="container-activities">
             <h1 class="text-center">Actividades</h1>
             <b-row class="text-center justify-content-center">
-                <b-col v-bind:key="`a-${index}`" class="activities" cols="4" lg="3" v-for="(a, index) in Activities">
+                <b-col v-bind:key="`a-${index}`" class="activities" cols="10" lg="3" v-for="(a, index) in Activities">
+                    <b-button href="#images-activities" variant="primary" class="button-activitie" v-on:click="showImages(index)">Ver imagenes</b-button>
                     <h4>
                         {{a.challengeName}}
                     </h4>
-                    <button variant="primary" class="button-activitie" v-on:click="showImages(index)">Ver imagenes</button>
                     <p>Descripcion: <br>
                         {{a.challengeDescription}}                        
                     </p>
@@ -91,6 +91,7 @@ export default {
                         this.urls.push(url);
                     })
             }
+
         },
         closeImages() {
             this.estado = false;
@@ -126,10 +127,7 @@ export default {
 .button-activitie{
     background: #563d7c;
     color: white;
-    padding: 8px 15px 8px 15px;
-    border: 0px;
-    border-radius: 0.25rem;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin: 10px;
 }
+
 </style>
